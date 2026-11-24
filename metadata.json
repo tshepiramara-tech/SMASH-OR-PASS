@@ -1,0 +1,11 @@
+{
+  "name": "SMASH OR PASS",
+  "description": "International dating and creator discovery platform with fluid swipe and scroll matchmaking, instant private messaging, multi-language profiles, live streaming at 1,000+ followers, and built-in monetization.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

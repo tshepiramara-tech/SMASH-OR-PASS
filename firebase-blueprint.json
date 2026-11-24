@@ -1,0 +1,291 @@
+{
+  "entities": {
+    "Profile": {
+      "title": "Public User Profile",
+      "description": "Publicly discoverable SMASH OR PASS user profile without PII.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "displayName": { "type": "string", "minLength": 2, "maxLength": 40 },
+        "age": { "type": "number" },
+        "gender": { "type": "string", "enum": ["Female", "Male", "Non-binary"] },
+        "interestedIn": { "type": "string", "enum": ["Everyone", "Female", "Male"] },
+        "city": { "type": "string", "minLength": 1, "maxLength": 60 },
+        "country": { "type": "string", "minLength": 1, "maxLength": 60 },
+        "region": { "type": "string", "enum": ["Europe", "Americas", "Africa", "Asia-Pacific", "Middle East"] },
+        "languages": { "type": "array" },
+        "interests": { "type": "array" },
+        "bio": { "type": "string", "minLength": 10, "maxLength": 400 },
+        "primaryPhoto": { "type": "string", "minLength": 1, "maxLength": 350000 },
+        "photoCount": { "type": "number" },
+        "followersCount": { "type": "number" },
+        "followingCount": { "type": "number" },
+        "isLive": { "type": "boolean" },
+        "premiumTier": { "type": "string", "enum": ["free", "gold", "platinum"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": [
+        "uid",
+        "displayName",
+        "age",
+        "gender",
+        "interestedIn",
+        "city",
+        "country",
+        "region",
+        "languages",
+        "interests",
+        "bio",
+        "primaryPhoto",
+        "photoCount",
+        "followersCount",
+        "followingCount",
+        "isLive",
+        "premiumTier",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "ProfilePhoto": {
+      "title": "Profile Photo",
+      "description": "High-quality uploaded photo belonging to a user profile.",
+      "type": "object",
+      "properties": {
+        "ownerId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "url": { "type": "string", "minLength": 1, "maxLength": 350000 },
+        "caption": { "type": "string", "maxLength": 120 },
+        "order": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["ownerId", "url", "caption", "order", "createdAt"]
+    },
+    "PrivateAccount": {
+      "title": "Private User Account",
+      "description": "Private PII, subscription tier, and creator earnings isolated from public reads.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "email": { "type": "string", "maxLength": 120 },
+        "premiumTier": { "type": "string", "enum": ["free", "gold", "platinum"] },
+        "subscriptionStatus": { "type": "string", "enum": ["active", "inactive"] },
+        "monthlySpendUsd": { "type": "number" },
+        "creatorEarningsUsd": { "type": "number" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email", "premiumTier", "subscriptionStatus", "monthlySpendUsd", "creatorEarningsUsd", "updatedAt"]
+    },
+    "Swipe": {
+      "title": "Smash or Pass Decision",
+      "description": "Records a user's Smash or Pass interaction with another profile.",
+      "type": "object",
+      "properties": {
+        "fromUid": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "toUid": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "decision": { "type": "string", "enum": ["smash", "pass"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["fromUid", "toUid", "decision", "createdAt"]
+    },
+    "Follow": {
+      "title": "Follower Relationship",
+      "description": "Tracks who follows whom toward the 1,000-follower creator unlock.",
+      "type": "object",
+      "properties": {
+        "followerUid": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "targetUid": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["followerUid", "targetUid", "createdAt"]
+    },
+    "Conversation": {
+      "title": "Private Conversation",
+      "description": "Private inbox thread unlocked upon clicking Smash.",
+      "type": "object",
+      "properties": {
+        "participants": { "type": "array" },
+        "userA": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "userB": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "userAName": { "type": "string", "minLength": 1, "maxLength": 60 },
+        "userBName": { "type": "string", "minLength": 1, "maxLength": 60 },
+        "userAPhoto": { "type": "string", "maxLength": 350000 },
+        "userBPhoto": { "type": "string", "maxLength": 350000 },
+        "lastMessage": { "type": "string", "maxLength": 500 },
+        "lastSenderId": { "type": "string", "maxLength": 128 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": [
+        "participants",
+        "userA",
+        "userB",
+        "userAName",
+        "userBName",
+        "userAPhoto",
+        "userBPhoto",
+        "lastMessage",
+        "lastSenderId",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "Message": {
+      "title": "Private Chat Message",
+      "description": "Encrypted-in-transit private message inside a conversation.",
+      "type": "object",
+      "properties": {
+        "senderId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "text": { "type": "string", "minLength": 1, "maxLength": 1000 },
+        "language": { "type": "string", "minLength": 2, "maxLength": 30 },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["senderId", "text", "language", "createdAt"]
+    },
+    "ProfileVideo": {
+      "title": "Creator Profile Video",
+      "description": "Video posted on profile once creator reaches 1,000+ followers.",
+      "type": "object",
+      "properties": {
+        "creatorId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "creatorName": { "type": "string", "minLength": 1, "maxLength": 40 },
+        "creatorPhoto": { "type": "string", "maxLength": 350000 },
+        "title": { "type": "string", "minLength": 2, "maxLength": 100 },
+        "videoUrl": { "type": "string", "minLength": 1, "maxLength": 700000 },
+        "durationSec": { "type": "number" },
+        "likesCount": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["creatorId", "creatorName", "creatorPhoto", "title", "videoUrl", "durationSec", "likesCount", "createdAt"]
+    },
+    "LiveStream": {
+      "title": "Live Stream Broadcast",
+      "description": "Live broadcast session unlocked at 1,000+ followers.",
+      "type": "object",
+      "properties": {
+        "hostId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "hostName": { "type": "string", "minLength": 1, "maxLength": 40 },
+        "hostPhoto": { "type": "string", "maxLength": 350000 },
+        "title": { "type": "string", "minLength": 2, "maxLength": 100 },
+        "language": { "type": "string", "minLength": 2, "maxLength": 30 },
+        "status": { "type": "string", "enum": ["live", "ended"] },
+        "viewerCount": { "type": "number" },
+        "startedAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["hostId", "hostName", "hostPhoto", "title", "language", "status", "viewerCount", "startedAt", "updatedAt"]
+    },
+    "LiveComment": {
+      "title": "Live Stream Comment",
+      "description": "Viewer comment inside a live stream room.",
+      "type": "object",
+      "properties": {
+        "authorId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "authorName": { "type": "string", "minLength": 1, "maxLength": 40 },
+        "text": { "type": "string", "minLength": 1, "maxLength": 300 },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["authorId", "authorName", "text", "createdAt"]
+    },
+    "AdCampaign": {
+      "title": "Advert Campaign",
+      "description": "Sponsored native advert campaign generating platform revenue.",
+      "type": "object",
+      "properties": {
+        "ownerId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "brandName": { "type": "string", "minLength": 2, "maxLength": 60 },
+        "headline": { "type": "string", "minLength": 4, "maxLength": 120 },
+        "description": { "type": "string", "minLength": 10, "maxLength": 240 },
+        "ctaLabel": { "type": "string", "minLength": 2, "maxLength": 30 },
+        "targetRegion": { "type": "string", "minLength": 2, "maxLength": 40 },
+        "cpmUsd": { "type": "number" },
+        "cpcUsd": { "type": "number" },
+        "impressions": { "type": "number" },
+        "clicks": { "type": "number" },
+        "revenueEarnedUsd": { "type": "number" },
+        "status": { "type": "string", "enum": ["active", "paused"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": [
+        "ownerId",
+        "brandName",
+        "headline",
+        "description",
+        "ctaLabel",
+        "targetRegion",
+        "cpmUsd",
+        "cpcUsd",
+        "impressions",
+        "clicks",
+        "revenueEarnedUsd",
+        "status",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "SessionCommission": {
+      "title": "Active Session Commission",
+      "description": "Tracks active internet data connection sessions and micro-commissions earned.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "connectionType": { "type": "string", "enum": ["cellular", "wifi", "ethernet", "unknown"] },
+        "effectiveType": { "type": "string", "enum": ["4g", "3g", "2g", "slow-2g", "wifi", "unknown"] },
+        "country": { "type": "string", "minLength": 2, "maxLength": 60 },
+        "commissionUsd": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "connectionType", "effectiveType", "country", "commissionUsd", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/profiles/{userId}": {
+      "schema": { "$ref": "#/entities/Profile" },
+      "description": "Public dating profiles."
+    },
+    "/profiles/{userId}/photos/{photoId}": {
+      "schema": { "$ref": "#/entities/ProfilePhoto" },
+      "description": "Uploaded photos for each profile."
+    },
+    "/users/{userId}/private/account": {
+      "schema": { "$ref": "#/entities/PrivateAccount" },
+      "description": "Owner-only PII and subscription billing record."
+    },
+    "/swipes/{swipeId}": {
+      "schema": { "$ref": "#/entities/Swipe" },
+      "description": "Smash and Pass user decisions."
+    },
+    "/follows/{followId}": {
+      "schema": { "$ref": "#/entities/Follow" },
+      "description": "Follower relationships."
+    },
+    "/conversations/{convId}": {
+      "schema": { "$ref": "#/entities/Conversation" },
+      "description": "Private messaging threads between matched users."
+    },
+    "/conversations/{convId}/messages/{messageId}": {
+      "schema": { "$ref": "#/entities/Message" },
+      "description": "Messages inside a private conversation."
+    },
+    "/videos/{videoId}": {
+      "schema": { "$ref": "#/entities/ProfileVideo" },
+      "description": "Short videos posted by creators with 1,000+ followers."
+    },
+    "/liveStreams/{streamId}": {
+      "schema": { "$ref": "#/entities/LiveStream" },
+      "description": "Live broadcasts hosted by creators with 1,000+ followers."
+    },
+    "/liveStreams/{streamId}/comments/{commentId}": {
+      "schema": { "$ref": "#/entities/LiveComment" },
+      "description": "Comments inside a live broadcast."
+    },
+    "/adCampaigns/{campaignId}": {
+      "schema": { "$ref": "#/entities/AdCampaign" },
+      "description": "Platform advert campaigns and revenue counters."
+    },
+    "/sessionCommissions/{sessionId}": {
+      "schema": { "$ref": "#/entities/SessionCommission" },
+      "description": "Active internet data connection session commission ledger."
+    }
+  }
+}
